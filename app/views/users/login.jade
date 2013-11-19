@@ -1,0 +1,32 @@
+extends layout 
+
+block form
+    .well
+        form(action='/users/session', method='post').form-horizontal
+          .fieldset
+            legend Log in!
+            .form-group
+                label.col-lg-2.control-label Email 
+                div.col-lg-10
+                    input.form-control(
+                        type='text',
+                        name='username',
+                        placeholder='User Name')
+            .form-group 
+                label.col-lg-2.control-label Password
+                div.col-lg-10
+                    input.form-control(
+                        type='password',
+                        name='password',
+                        placeholder='Password')
+            .form-group
+                div.col-lg-10
+                    input(type='submit', value='Log In').btn.btn-primary
+            .form-group
+                div.col-lg-10
+                    p Don't have a an account? 
+                        a(href="/signup") Signup!
+block validate
+    - if (message != ''){
+        p.alert.alert-danger=message
+    - }
