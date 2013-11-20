@@ -2,10 +2,10 @@ var mongoose = require('mongoose')
     , Feed = mongoose.model('Feed')
     , ntwitter = require('ntwitter')
     , keys = require('../../config/twitterKeys.json')
-    , maxTweets = 15
     , foundTweets = 0
     , tweetFeed
     , twit
+    , resp
     , params = {
         screen_name: '',
         count: 15,
@@ -27,26 +27,42 @@ function checkCache (dateRequested) {
 }
 
 function finish () {
-    if (--numberSources == 0 ) console.log(tweetFeed)
+    if (--numberSources == 0 ) {
+        console.log(tweetFeed)
+        console.log("Processed Tweets: " + foundTweets)
+        tweetFeed.save(function(err){
+            console.log(err)
+        })
+        resp.send(tweetFeed)
+    }
 }
 
-exports.init = function () {
-   
+exports.init = function (req, res) {
+  
+    resp = res
     foundTweets=0
     twit = new ntwitter(keys)
     numberSources = twitterSources.length
-    console.log(numberSources)
+    console.log("Number of soures: " + numberSources)
     Feed
-        .find({}
+        .findOne({}
         )
         .exec(function (err, tweets) {
             if (err) throw err
-            
-            if (checkCache(tweets.dateRequested)) return tweets //how does this get ret
-            else tweetFeed = new Feed()
-                
+            if (checkCache(tweets.dateRequested)) {
+                console.log("Cache hit")
+                console.log(tweets)
+                res.send(tweets)  
+                return null;
+            } //tweets //how does this get ret
+            else {
+                Feed.remove({}, function(err) { 
+                   console.log('Clear all previous entries') 
+                });
+                tweetFeed = new Feed()
+            }
             tweetFeed.dateRequested=Date.now()
-            
+            console.log(tweetFeed) 
             for (i in twitterSources) { getTweets(twitterSources[i]) }
         })
 }
@@ -55,19 +71,18 @@ exports.init = function () {
 function getTweets(user) {
     if (user) params.screen_name = user
     twit.getUserTimeline(params, function (err,data) {
-        if (err) res.json(err) 
-        var  countRT = countT = 0
+        if (err) { 
+            res.json(err)
+            return 
+        }
+        
         data.forEach(function(tweet) {
-            if (tweet.retweeted_status) {
-                tweet = tweet.retweeted_status
-                countRT++
-            } else {
-                countT++
-            }
             var geo = null
+                , dt = new Date(tweet.created_at)
+                , date = new Date()
+
+            if (tweet.retweeted_status) tweet = tweet.retweeted_status
             if (tweet.coordinates) geo = tweet.coordinates.coordinates 
-            var dt = new Date(tweet.created_at)
-            var date = new Date()
             if (dt.toDateString()== date.toDateString()) {
                 var tweet = {
                     "datePosted" : tweet.created_at,
@@ -76,10 +91,9 @@ function getTweets(user) {
                     "screen_name": tweet.user.screen_name
                 }
                 tweetFeed.tweets.push(tweet)
+                foundTweets++
             }
         })
         finish()
-        foundTweets = countRT + countT + foundTweets
     })
-
 }
