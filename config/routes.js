@@ -13,8 +13,8 @@ module.exports = function(app,passport, streamable){
 	app.get('/', users.index);
 
     //stream routes
-    //var streams = require('../app/controllers/streams.js')
-    //app.get('/streams/:domain/*', streamable, streams.getSource)
+    var streams = require('../app/controllers/twitter.js')
+    app.get('/tweets', streams.init)
 
     //authentication
     app.post('/users/session',
