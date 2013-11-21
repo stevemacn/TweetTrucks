@@ -49,11 +49,13 @@ exports.init = function (req, res) {
         )
         .exec(function (err, tweets) {
             if (err) throw err
-            if (checkCache(tweets.dateRequested)) {
-                console.log("Cache hit")
-                console.log(tweets)
-                res.send(tweets)  
-                return null;
+            if (tweets){ 
+                if (checkCache(tweets.dateRequested)) {
+                    console.log("Cache hit")
+                    console.log(tweets)
+                    res.send(tweets)  
+                    return null;
+                }
             } //tweets //how does this get ret
             else {
                 Feed.remove({}, function(err) { 
