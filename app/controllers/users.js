@@ -42,7 +42,16 @@ exports.signup = function (req, res) {
 }
 
 exports.create = function (req, res) {
-  var user = new User(req.body)
+  console.log("New user created")
+  console.log(req.body)
+  var template = {}
+     if (req.body.username && req.body.password && req.body.email){
+              template.username=req.body.username
+              template.password=req.body.password
+              template.email= req.body.email
+      }
+  var user = new User(template)
+  
   user.provider = 'local'
   user.save(function (err) {
       if (err) {
