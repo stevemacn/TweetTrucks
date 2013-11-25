@@ -56,13 +56,12 @@ exports.init = function (req, res) {
                     res.send(tweets)  
                     return null;
                 }
+                
             } //tweets //how does this get ret
-            else {
-                Feed.remove({}, function(err) { 
-                   console.log('Clear all previous entries') 
-                });
-                tweetFeed = new Feed()
-            }
+            Feed.remove({}, function(err) { 
+                console.log('Clear all previous entries') 
+            });
+            tweetFeed = new Feed()
             tweetFeed.dateRequested=Date.now()
             console.log(tweetFeed) 
             for (i in twitterSources) { getTweets(twitterSources[i]) }
