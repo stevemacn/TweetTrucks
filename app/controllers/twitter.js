@@ -56,7 +56,6 @@ exports.init = function (req, res) {
                     res.send(tweets)  
                     return null;
                 }
-                
             } //tweets //how does this get ret
             Feed.remove({}, function(err) { 
                 console.log('Clear all previous entries') 
@@ -89,7 +88,8 @@ function getTweets(user) {
                     "datePosted" : tweet.created_at,
                     "content": tweet.text,
                     "geo": geo,
-                    "screen_name": tweet.user.screen_name
+                    "screen_name": tweet.user.screen_name,
+                    "avatar": tweet.user.profile_image_url
                 }
                 tweetFeed.tweets.push(tweet)
                 foundTweets++
