@@ -16,7 +16,8 @@ API routes
 GET tweets/
 GET trucks/
 
-POST truck/:truckName/:temporality/:time/:location/:id
+Example Post
+curl -X POST -H "Content-Type: application/json" -d '{"truckname":"pigbucket", "id":"529a28c7575fa6ea7a000003"}' http://localhost:3000/truck
 
 Setup
 ---
