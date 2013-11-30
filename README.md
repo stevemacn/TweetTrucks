@@ -11,6 +11,13 @@ Requirements
 3. Edit "config/twitterKeysSample.json" with your keys
 4. Save "config/twitterKeysSample.json" to "config/twitterKeys.json"
 
+API routes
+---
+GET tweets/
+GET trucks/
+
+POST trucks/:truckName/:temporality/:time/:location/:id
+
 Setup
 ---
     npm install
