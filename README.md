@@ -16,9 +16,8 @@ API routes
 GET tweets/
 GET trucks/
 
-Example Post
-curl -X POST -H "Content-Type: application/json" -d '{"truckname":"pigbucket", "id":"529a28c7575fa6ea7a000003"}' http://localhost:3000/truck
-
+Example Post (tagging truck name and tweet evidence id)
+curl -X POST -H "Content-Type: application/json" -d '{"truckname":"papiquesotruck", "id":"529a2c05c4161de97f000004"}' http://localhost:3000/truck
 Setup
 ---
     npm install
