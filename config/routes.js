@@ -4,21 +4,30 @@ module.exports = function(app,passport, streamable){
     var users = require('../app/controllers/users')
     app.get('/signup', users.signup)
     app.post('/users', users.create)
-   
+    
     app.get('/login', users.login)
-
     app.get('/logout', users.logout)
-
+    
     //general routes
 	app.get('/', users.index);
 
-    //stream routes
-    var streams = require('../app/controllers/twitter.js')
-    app.get('/tweets', streams.init)
+    var twitter = require('../app/controllers/twitter.js')
+    app.get('/tweets', twitter.init)
+
+    //trucks routes
+    var trucks = require('../app/controllers/trucks.js')
+    
+    app.get('/trucks', trucks.get)
+    //  /trucks/thepigandcow/today/12-3/35.309,-80.987/8d76dfae13ee
+    app.post(
+        '/trucks/:truckName/:temporality/:time/:location/:id',
+        trucks.post
+    )
+    app.post('/trucks/:truckName/:temporality/:time/:location', trucks.post)
 
     //authentication
     app.post('/users/session',
-        passport.authenticate('local', {
+       passport.authenticate('local', {
             successRedirect: '/',
             failureRedirect: '/login',
             failureFlash: "User name or password incorrect"

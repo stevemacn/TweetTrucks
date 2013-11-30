@@ -29,7 +29,8 @@ var Feed = new Schema({
         screen_name:{type: String, default:''},
         content:    {type: String, default:''},
         geo:        {type: String, default:''},
-        datePosted: {type: Date, default:Date.now()}
+        datePosted: {type: Date, default:Date.now()},
+        avatar: {type: String, default:''}
     }]
 })
 
