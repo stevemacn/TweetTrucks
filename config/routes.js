@@ -19,10 +19,7 @@ module.exports = function(app,passport, streamable){
     
     app.get('/trucks', trucks.get)
     //  /trucks/thepigandcow/today/12-3/35.309,-80.987/8d76dfae13ee
-    app.post(
-        '/truck/:truckName?/:temporality?/:time?/:location?/:id?',
-        trucks.post
-    )
+    app.post('/truck',trucks.post)
     
     //authentication
     app.post('/users/session',

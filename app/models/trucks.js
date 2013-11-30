@@ -10,7 +10,7 @@ var Truck = new Schema({
     location:   {type:String, default:''}, 
     //Is it "valid" or "invalid", if someone goes and its not there they can mark invalid
     validity:   {type:String, default:''}, //"valid", "invalid", "unknown"
-    
+    version:    {type: Number, default:''},   //how many prior tags
     //supporting evidence
     tweets: [{
         username:   {type: String, default:''},//who tagged it
@@ -18,7 +18,8 @@ var Truck = new Schema({
         screen_name:{type: String, default:''}, 
         content:    {type: String, default:''},
         geo:        {type: String, default:''},
-        datePosted: {type: Date,   default:Date.now()}
+        datePosted: {type: Date,   default:Date.now()},
+        avatar:     {type: String, default:''}
     }]
 })
 
