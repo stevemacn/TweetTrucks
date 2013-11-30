@@ -12,23 +12,29 @@ exports.get = function (req, res) {
 }
 
 function populateTruck (params, truck, user) {
-     console.log(user)
-     //if (!user) return null 
-     truck.date=Date.now()
+    console.log(user)
+    //if (!user) return null 
+    truck.date=Date.now()
      
-     if (params.temporality) truck.temporality = params.temporality
-     if (params.location) truck.location = params.location
-     if (params.validity) truck.validity = params.validity
-     truck.version++
-     var id = params.id
-     Feed
-         .findOne({_id : id})
-         .exec(function (err, tweet) {
-             if (err) throw err
-             if (tweet) {
-                tweet.username = user 
-                tweet.version = truck.version
-                truck.tweets.push(tweet)        
+    if (params.temporality) truck.temporality = params.temporality
+    if (params.location) truck.location = params.location
+    if (params.validity) truck.validity = params.validity
+    truck.version++
+    Feed
+        .findOne({})
+        .exec(function (err, tweets) {
+            if (err) throw err
+            if (tweets) {
+                tweets = tweets.tweets
+                for (i  in tweets) {
+                    var tweet = tweets[i]
+                    if (tweet._id==params.id) {
+                        tweet.username = user 
+                        tweet.version = truck.version
+                        truck.tweets.push(tweet)
+                        console.log(truck)
+                    }
+                }
              }
              truck.save()
          })       
