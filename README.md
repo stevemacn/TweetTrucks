@@ -16,7 +16,7 @@ API routes
 GET tweets/
 GET trucks/
 
-POST trucks/:truckName/:temporality/:time/:location/:id
+POST truck/:truckName/:temporality/:time/:location/:id
 
 Setup
 ---
