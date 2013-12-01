@@ -51,8 +51,17 @@ function populateTruck (params, truck, user) {
          })       
 }
 
-exports.del = function (req, res) { 
-
+exports.del = function (req, res) {
+    var now = new Date()
+    
+    //just for testing, to avoid using mocha
+    Truck
+        .find({date: {$lt: now.setDate(now.getDate()-1)}, temporality:"today"})
+        .exec(function(err, trucks){
+            if (err) throw err
+            console.log(trucks)
+        })
+    
     Truck
         .remove({})
         .exec(function(err,slt) {
@@ -80,7 +89,14 @@ exports.post = function (req, res) {
             console.log(truck)
             populateTruck(params, truck, req.user)
         })
-    
+    Truck
+        .remove({date: {$lt: now.setDate(now.getDate()-1)}, temporality:"today"})
+        .exec(function(err, trucks){
+            if (err) throw err
+            console.log(trucks)
+        })
+   
+
     res.send("ok")   
     return null
 }
