@@ -20,7 +20,9 @@ Example Post (tagging truck name and tweet evidence id)
 
     curl -X POST -H "Content-Type: application/json" -d '{"truckname":"papiquesotruck", "id":"529a2c05c4161de97f000004"}' http://localhost:3000/truck
 
-Options: truckname, validity, temporality, location, 
+Options: truckname, validity, temporality, location, id(of tweet) 
+
+If the tweet is geo-tagged this value will be used instead of location
 
 Setup
 ---
