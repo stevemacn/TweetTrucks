@@ -13,9 +13,10 @@ exports.get = function (req, res) {
 
 function populateTruck (params, truck, user) {
     console.log(user)
-    //if (!user) return null 
+    //if (!user) return null
+    
+    //Populate the trucks
     truck.date=Date.now()
-     
     if (params.temporality) truck.temporality = params.temporality
     if (params.location) truck.location = params.location
     if (params.validity) truck.validity = params.validity
@@ -29,9 +30,19 @@ function populateTruck (params, truck, user) {
                 for (i  in tweets) {
                     var tweet = tweets[i]
                     if (tweet._id==params.id) {
+                        var twt = {
+                            username : user,
+                            version: truck.version,
+                            screen_name: tweet.screen_name,
+                            content: tweet.content,
+                            geo: tweet.geo,
+                            datePosted: tweet.datePosted,
+                            avatar: tweet.avatar
+                        }
+                        if (twt.geo && !truck.location) truck.location = twt.geo
                         tweet.username = user 
                         tweet.version = truck.version
-                        truck.tweets.push(tweet)
+                        truck.tweets.push(twt)
                         console.log(truck)
                     }
                 }
@@ -39,6 +50,16 @@ function populateTruck (params, truck, user) {
              truck.save()
          })       
 }
+
+exports.del = function (req, res) { 
+
+    Truck
+        .remove({})
+        .exec(function(err,slt) {
+            res.send("Removed")
+        })
+}
+
 
 exports.post = function (req, res) {
     var params = null
