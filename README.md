@@ -22,7 +22,7 @@ Example Post (tagging truck name and tweet evidence id)
 
 Options: truckname, validity, temporality, location, id(of tweet) 
 
-If the tweet is geo-tagged this value will be used instead of location
+If a tweet is geotagged this value will be used unless location is specified
 
 Setup
 ---
